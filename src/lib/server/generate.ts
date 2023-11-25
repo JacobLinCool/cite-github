@@ -33,12 +33,12 @@ async function fetch(username: string, token?: string): Promise<any[]> {
 			direction: "desc",
 		});
 
+		repos.push(...data.filter((repo) => !repo.fork));
+		page++;
+
 		if (data.length < 100) {
 			break;
 		}
-
-		repos.push(...data.filter((repo) => !repo.fork));
-		page++;
 	}
 
 	console.log(`Fetched ${repos.length} repositories for ${username}`);
@@ -70,6 +70,7 @@ function convert(repos: Repos, username: string, prefix: string, long_title?: bo
 			`month = {${month}}`,
 			`year = {${year}}`,
 			`day = {${day}}`,
+			`url = {${html_url}}`,
 			...(description ? [`note = {${description}}`] : []),
 		];
 
